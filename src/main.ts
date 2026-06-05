@@ -67,8 +67,8 @@ async function bootstrap() {
         });
 
         app.use((req, res, next) => {
-            if (req.csrfToken && !req.path.startsWith('/api/docs')) {
-                res.cookie('XSRF-TOKEN', req.csrfToken());
+            if (process.env.NODE_ENV !== 'production') {
+                SwaggerModule.setup('api/docs', app, document);
             }
             next();
         });
