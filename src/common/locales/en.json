@@ -1,0 +1,23 @@
+{
+  "errors": {
+    "500": "Internal server error",
+    "401": "Unauthorized",
+    "403": "Forbidden",
+    "404": "Not found",
+    "400": "Bad request"
+  },
+  "validation": {
+    "email": "Invalid email",
+    "password": "Password must be 8-50 characters, contain a letter and a number",
+    "firstName": "First name must be 2-50 characters",
+    "lastName": "Last name must be 2-50 characters",
+    "code": "Code must be 6 alphanumeric characters (A-Z, 0-9)"
+  },
+  "email": {
+    "verify": "Email verification. Your code: {{code}}",
+    "reset": "Password reset. Code: {{code}}, valid for {{expiresMinutes}} minutes.",
+    "newDevice": "New device sign-in. IP: {{ip}}, User-Agent: {{userAgent}}",
+    "locked": "Account {{#if permanent}}permanently{{else}}temporarily{{/if}} locked.",
+    "deletion": "Account deletion confirmation. Code: {{code}}. Valid for {{expiresMinutes}} minutes."
+  }
+}

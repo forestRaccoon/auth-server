@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Новый вход в аккаунт</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 500px; margin: 30px auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background-color: #f0ad4e; color: white; padding: 20px; text-align: center; }
+        .content { padding: 30px; text-align: left; }
+        .info { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; font-family: monospace; }
+        .footer { background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #777; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Новый вход в аккаунт</h2>
+    </div>
+    <div class="content">
+        <p>Здравствуйте,</p>
+        <p>Мы заметили новый вход в ваш аккаунт с неизвестного устройства.</p>
+        <div class="info">
+            <strong>IP-адрес:</strong> {{ip}}<br>
+            <strong>Браузер / Устройство:</strong> {{userAgent}}<br>
+            <strong>Время:</strong> {{timestamp}}
+        </div>
+        <p>Если это были вы, проигнорируйте сообщение. Если нет — <strong>немедленно смените пароль</strong> и свяжитесь с поддержкой.</p>
+    </div>
+    <div class="footer">
+        <p>© {{year}} Ваше приложение. Все права защищены.</p>
+    </div>
+</div>
+</body>
+</html>

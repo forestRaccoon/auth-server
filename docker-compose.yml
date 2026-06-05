@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:6
+    container_name: auth_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  redis:
+    image: redis:7-alpine
+    container_name: auth_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+  mailhog:
+    image: mailhog/mailhog
+    container_name: auth_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  app:
+    build: .
+    container_name: auth_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
+      - mailhog
+    environment:
+      MONGO_URI: mongodb://root:example@mongo:27017/auth_db?authSource=admin
+      REDIS_HOST: redis
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_SECURE: "false"
+      NODE_ENV: development
+    volumes:
+      - ./uploads:/app/uploads
+volumes:
+  mongo_data:
+  redis_data:
