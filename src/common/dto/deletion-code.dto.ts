@@ -1,8 +1,13 @@
-import { IsNotEmpty, Length, Matches } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class DeletionCodeDto {
+export class PasswordDto {
+    @ApiProperty({
+        example: 'MyCurrentPassword123!',
+        description: 'Current user password for verification',
+        minLength: 1,
+    })
     @IsNotEmpty()
-    @Length(6, 6)
-    @Matches(/^[A-Z0-9]{6}$/i, { message: 'Code must be 6 alphanumeric characters' })
-    code: string;
+    @IsString()
+    password: string;
 }
