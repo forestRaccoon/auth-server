@@ -2,38 +2,43 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Account Locked</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account locked</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-        .container { max-width: 500px; margin: 30px auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background-color: #d9534f; color: white; padding: 20px; text-align: center; }
-        .content { padding: 30px; text-align: left; }
-        .alert { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #d9534f; }
-        .footer { background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #777; }
+        body { margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .container { max-width: 520px; margin: 40px auto; padding: 20px; }
+        .card { background: #ffffff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow: hidden; }
+        .header { background: #dc2626; padding: 32px 24px; text-align: center; color: white; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 600; }
+        .content { padding: 32px 24px; text-align: left; }
+        .alert { background: #fef2f2; border-left: 4px solid #dc2626; padding: 16px; border-radius: 8px; margin: 24px 0; }
+        .footer { background: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h2>{{#if permanent}}Account Permanently Locked{{else}}Account Temporarily Locked{{/if}}</h2>
-    </div>
-    <div class="content">
-        <p>Hello,</p>
-        {{#if permanent}}
-            <p>Your account has been <strong>permanently locked</strong> due to multiple failed login attempts.</p>
-            <div class="alert">
-                Please contact support to unlock your account.
-            </div>
-        {{else}}
-            <p>Your account has been <strong>temporarily locked</strong> for 15 minutes due to too many failed login attempts.</p>
-            <div class="alert">
-                Please try again after 15 minutes or reset your password.
-            </div>
-        {{/if}}
-        <p>If you didn't attempt to sign in, someone else might be trying to access your account. We recommend changing your password.</p>
-    </div>
-    <div class="footer">
-        <p>© {{year}} Your App. All rights reserved.</p>
+    <div class="card">
+        <div class="header">
+            <h1>{{#if permanent}}🔒 Account Permanently Locked{{else}}⏳ Account Temporarily Locked{{/if}}</h1>
+        </div>
+        <div class="content">
+            <p style="font-size: 16px; color: #374151;">Hello,</p>
+            {{#if permanent}}
+                <p style="font-size: 16px; color: #374151;">Your account has been <strong>permanently locked</strong> due to multiple failed login attempts.</p>
+                <div class="alert">
+                    <strong>⚠️ Action required:</strong> Please contact support to unlock your account.
+                </div>
+            {{else}}
+                <p style="font-size: 16px; color: #374151;">Your account has been <strong>temporarily locked</strong> for 15 minutes because of too many failed login attempts.</p>
+                <div class="alert">
+                    <strong>⏰ Temporary lock:</strong> You can try again in 15 minutes or reset your password.
+                </div>
+            {{/if}}
+            <p style="font-size: 14px; color: #6b7280;">If you didn't attempt to sign in, someone else may be trying to access your account. We recommend securing your account immediately.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{year}} KirAuth. All rights reserved.</p>
+        </div>
     </div>
 </div>
 </body>

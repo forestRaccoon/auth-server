@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common';
 import { I18nService } from './services/i18n.service';
-import { ValidationConfigService } from './services/validation-config.service';
 import { SanitizeService } from './services/sanitize.service';
 import { IsEmailCustomConstraint } from './validators/is-email-custom.validator';
 import { IsPasswordStrongConstraint } from './validators/is-password-strong.validator';
@@ -11,7 +10,6 @@ import { IsResetCodeConstraint } from './validators/is-reset-code.validator';
 @Module({
     providers: [
         I18nService,
-        ValidationConfigService,
         SanitizeService,
         IsEmailCustomConstraint,
         IsPasswordStrongConstraint,
@@ -20,7 +18,6 @@ import { IsResetCodeConstraint } from './validators/is-reset-code.validator';
     ],
     exports: [
         I18nService,
-        ValidationConfigService,
         SanitizeService,
         IsEmailCustomConstraint,
         IsPasswordStrongConstraint,

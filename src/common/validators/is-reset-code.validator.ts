@@ -1,21 +1,16 @@
 import { ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments } from 'class-validator';
-import { Injectable } from '@nestjs/common';
-import { ValidationConfigService } from '../services/validation-config.service';
+import { validationConstants } from '../../config/validation.constants';
 
-@ValidatorConstraint({ name: 'isResetCode', async: true })
-@Injectable()
+@ValidatorConstraint({ name: 'isResetCode', async: false })
 export class IsResetCodeConstraint implements ValidatorConstraintInterface {
-    constructor(private validationConfig: ValidationConfigService) {}
-
-    async validate(code: string) {
-        const len = this.validationConfig.getResetCodeLength();
-        const charset = this.validationConfig.getResetCodeCharset();
-        const regex = new RegExp(`^[${charset}]{${len}}$`);
+    validate(code: string): boolean {
+        const c = validationConstants.resetCode;
+        const regex = new RegExp(`^[${c.charset}]{${c.length}}$`);
         return regex.test(code);
     }
 
-    defaultMessage(args: ValidationArguments) {
-        const len = this.validationConfig.getResetCodeLength();
-        return `Reset code must be ${len} alphanumeric characters.`;
+    defaultMessage(args: ValidationArguments): string {
+        const c = validationConstants.resetCode;
+        return `Reset code must be ${c.length} alphanumeric characters (${c.charset}).`;
     }
 }

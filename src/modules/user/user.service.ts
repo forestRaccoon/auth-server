@@ -19,7 +19,7 @@ export class UserService {
         private sessionService: UserSessionService,
     ) {}
 
-    async create(email: string, password: string, firstName: string, lastName?: string): Promise<User> {
+    async create(email: string, password: string, firstName: string, lastName?: string, locale?: string): Promise<User> {
         const existing = await this.userModel.findOne({ email });
         if (existing) throw new BadRequestException('Email already exists');
 
@@ -31,6 +31,8 @@ export class UserService {
             avatar = avatar.replace('{{email_hash}}', hash);
         }
         const defaultRole = this.config.get('defaultUserRole') || UserRole.USER;
+        const userLocale = locale || 'en';
+
         const user = new this.userModel({
             email,
             passwordHash,
@@ -38,7 +40,7 @@ export class UserService {
             lastName: lastName ? this.sanitize.sanitize(lastName) : undefined,
             avatar,
             role: defaultRole,
-            locale: this.config.get('DEFAULT_LOCALE') || 'en',
+            locale: userLocale,
         });
         return user.save();
     }

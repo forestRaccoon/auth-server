@@ -23,12 +23,18 @@ export class MailService {
     private loadTemplates() {
         const locales = ['ru', 'en'];
         const types = ['verify', 'reset', 'new-device', 'locked', 'deletion'];
+
+        // Путь к исходным шаблонам (работает и в dev, и в production, если шаблоны скопированы)
+        const templatesDir = path.join(process.cwd(), 'src', 'modules', 'mail', 'templates');
+
         for (const locale of locales) {
             for (const type of types) {
-                const filePath = path.join(__dirname, 'templates', locale, `${type}.hbs`);
+                const filePath = path.join(templatesDir, locale, `${type}.hbs`);
                 if (fs.existsSync(filePath)) {
                     const source = fs.readFileSync(filePath, 'utf-8');
                     this.templates.set(`${locale}_${type}`, Handlebars.compile(source));
+                } else {
+                    console.warn(`Template not found: ${filePath}`);
                 }
             }
         }
@@ -45,6 +51,7 @@ export class MailService {
 
     getTemplate(locale: string, type: string, data: any): string {
         const template = this.templates.get(`${locale}_${type}`);
+
         if (!template) throw new Error(`Template not found: ${locale}_${type}`);
         return template(data);
     }

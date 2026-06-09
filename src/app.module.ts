@@ -16,6 +16,7 @@ import { AvatarModule } from './modules/avatar/avatar.module';
 import { CommonModule } from './common/common.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from './modules/auth/guards/roles.guard';
+import { CleanupModule } from './modules/cleanup/cleanup.module';
 
 @Module({
     imports: [
@@ -33,6 +34,7 @@ import { RolesGuard } from './modules/auth/guards/roles.guard';
                 limit: config.get('throttle.limit'),
             }],
         }),
+        CleanupModule,
         CommonModule,
         AuthModule,
         UserModule,

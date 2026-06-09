@@ -14,6 +14,13 @@
     "code": "Code must be 6 alphanumeric characters (A-Z, 0-9)"
   },
   "email": {
+    "subject": {
+      "verify": "Verify your email",
+      "reset": "Reset your password",
+      "newDevice": "New sign-in detected",
+      "locked": "Account locked",
+      "deletion": "Confirm account deletion"
+    },
     "verify": "Email verification. Your code: {{code}}",
     "reset": "Password reset. Code: {{code}}, valid for {{expiresMinutes}} minutes.",
     "newDevice": "New device sign-in. IP: {{ip}}, User-Agent: {{userAgent}}",

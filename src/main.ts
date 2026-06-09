@@ -17,6 +17,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
     const i18n = app.get(I18nService);
+    app.setGlobalPrefix('api');
 
     // --- Лимиты запросов ---
     const jsonLimit = configService.get('REQUEST_JSON_LIMIT_MB', 1);
@@ -59,16 +60,35 @@ async function bootstrap() {
             cookie: { secure: process.env.NODE_ENV === 'production' },
         }));
 
+        // Список публичных эндпоинтов, которые не требуют CSRF-защиты
+        const publicPaths = [
+            '/api/auth/register',
+            '/api/auth/login',
+            '/api/auth/refresh',
+            '/api/auth/forgot-password',
+            '/api/auth/reset-password',
+            '/api/auth/verify-email',
+            '/api/auth/resend-verification',
+            '/api/users/avatar',   // загрузка аватарки (multipart)
+        ];
+
         app.use((req, res, next) => {
-            // Исключаем загрузку аватарок (multipart) и документацию
-            if (req.path === '/users/avatar' && req.method === 'POST') return next();
-            if (req.path.startsWith('/api/docs') || req.path === '/api/docs-json') return next();
+            // Проверяем, принадлежит ли путь к публичным
+            if (publicPaths.some(path => req.path === path || req.path.startsWith(path + '/'))) {
+                return next();
+            }
+            // Исключаем документацию Swagger
+            if (req.path.startsWith('/api/docs') || req.path === '/api/docs-json') {
+                return next();
+            }
+            // Для всех остальных маршрутов применяем csurf
             return csurf({ cookie: true })(req, res, next);
         });
 
+        // Передаём CSRF-токен в куку (для клиента)
         app.use((req, res, next) => {
-            if (process.env.NODE_ENV !== 'production') {
-                SwaggerModule.setup('api/docs', app, document);
+            if (req.csrfToken && !req.path.startsWith('/api/docs')) {
+                res.cookie('XSRF-TOKEN', req.csrfToken());
             }
             next();
         });

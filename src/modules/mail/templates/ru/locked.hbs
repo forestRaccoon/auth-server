@@ -2,38 +2,43 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Блокировка аккаунта</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-        .container { max-width: 500px; margin: 30px auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background-color: #d9534f; color: white; padding: 20px; text-align: center; }
-        .content { padding: 30px; text-align: left; }
-        .alert { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #d9534f; }
-        .footer { background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #777; }
+        body { margin: 0; padding: 0; background-color: #f4f4f7; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .container { max-width: 520px; margin: 40px auto; padding: 20px; }
+        .card { background: #ffffff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow: hidden; }
+        .header { background: #dc2626; padding: 32px 24px; text-align: center; color: white; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 600; }
+        .content { padding: 32px 24px; text-align: left; }
+        .alert { background: #fef2f2; border-left: 4px solid #dc2626; padding: 16px; border-radius: 8px; margin: 24px 0; }
+        .footer { background: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h2>{{#if permanent}}Аккаунт заблокирован навсегда{{else}}Временная блокировка аккаунта{{/if}}</h2>
-    </div>
-    <div class="content">
-        <p>Здравствуйте,</p>
-        {{#if permanent}}
-            <p>Ваш аккаунт был <strong>навсегда заблокирован</strong> из-за многократных неудачных попыток входа.</p>
-            <div class="alert">
-                Для разблокировки обратитесь в службу поддержки.
-            </div>
-        {{else}}
-            <p>Ваш аккаунт был <strong>временно заблокирован</strong> на 15 минут из-за слишком большого количества неудачных попыток входа.</p>
-            <div class="alert">
-                Попробуйте снова через 15 минут или сбросьте пароль.
-            </div>
-        {{/if}}
-        <p>Если вы не пытались войти, возможно, кто-то пытается получить доступ к вашему аккаунту. Рекомендуем сменить пароль.</p>
-    </div>
-    <div class="footer">
-        <p>© {{year}} Ваше приложение. Все права защищены.</p>
+    <div class="card">
+        <div class="header">
+            <h1>{{#if permanent}}🔒 Аккаунт заблокирован навсегда{{else}}⏳ Временная блокировка аккаунта{{/if}}</h1>
+        </div>
+        <div class="content">
+            <p style="font-size: 16px; color: #374151;">Здравствуйте,</p>
+            {{#if permanent}}
+                <p style="font-size: 16px; color: #374151;">Ваш аккаунт был <strong>навсегда заблокирован</strong> из-за многократных неудачных попыток входа.</p>
+                <div class="alert">
+                    <strong>⚠️ Требуется действие:</strong> Обратитесь в службу поддержки для разблокировки.
+                </div>
+            {{else}}
+                <p style="font-size: 16px; color: #374151;">Ваш аккаунт был <strong>временно заблокирован</strong> на 15 минут из-за слишком большого количества неудачных попыток входа.</p>
+                <div class="alert">
+                    <strong>⏰ Временная блокировка:</strong> Вы можете попробовать снова через 15 минут или сбросить пароль.
+                </div>
+            {{/if}}
+            <p style="font-size: 14px; color: #6b7280;">Если вы не пытались войти, возможно, кто-то пытается получить доступ к вашему аккаунту. Рекомендуем принять меры для его защиты.</p>
+        </div>
+        <div class="footer">
+            <p>© {{year}} KirAuth. Все права защищены.</p>
+        </div>
     </div>
 </div>
 </body>

@@ -1,28 +1,36 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, MinLength, MaxLength, IsUrl, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsUrl, IsEnum, MinLength, MaxLength } from 'class-validator';
 import { UserRole } from '../../modules/user/schemas/user.schema';
+import {
+    validationConstants,
+    getNameDescription,
+    getAvatarDescription,
+    getRoleDescription,
+} from '../../config/validation.constants';
+
+const { fullName } = validationConstants;
 
 export class UpdateUserDto {
-    @ApiPropertyOptional({ example: 'Jane', description: 'New first name (2-50 chars)' })
+    @ApiPropertyOptional({ example: 'Jane', description: getNameDescription() })
     @IsOptional()
     @IsString()
-    @MinLength(2)
-    @MaxLength(50)
+    @MinLength(fullName.minLength)
+    @MaxLength(fullName.maxLength)
     firstName?: string;
 
-    @ApiPropertyOptional({ example: 'Smith', description: 'New last name (2-50 chars)' })
+    @ApiPropertyOptional({ example: 'Smith', description: getNameDescription() })
     @IsOptional()
     @IsString()
-    @MinLength(2)
-    @MaxLength(50)
+    @MinLength(fullName.minLength)
+    @MaxLength(fullName.maxLength)
     lastName?: string;
 
-    @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg', description: 'Avatar URL' })
+    @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg', description: getAvatarDescription() })
     @IsOptional()
     @IsUrl()
     avatar?: string;
 
-    @ApiPropertyOptional({ enum: UserRole, description: 'New role (requires admin rights)' })
+    @ApiPropertyOptional({ enum: UserRole, description: getRoleDescription() })
     @IsOptional()
     @IsEnum(UserRole)
     role?: UserRole;

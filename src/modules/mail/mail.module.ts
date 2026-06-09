@@ -15,6 +15,13 @@ import { ConfigService } from '@nestjs/config';
                     port: config.get('redis.port'),
                     password: config.get('redis.password'),
                 },
+                defaultJobOptions: {
+                    attempts: 3,
+                    backoff: {
+                        type: 'exponential',
+                        delay: 5000,
+                    },
+                },
             }),
             inject: [ConfigService],
         }),

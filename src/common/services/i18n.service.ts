@@ -8,12 +8,17 @@ export class I18nService {
 
     t(key: string, locale: string, params?: Record<string, any>): string {
         const lang = locale === 'ru' ? 'ru' : 'en';
-        let text = this.messages[lang]?.[key] || key;
+        let text = this.getNestedValue(this.messages[lang], key);
+        if (!text) return key; // fallback
         if (params) {
             Object.entries(params).forEach(([k, v]) => {
-                text = text.replace(new RegExp(`{{${k}}}`, 'g'), v);
+                text = text.replace(`{{${k}}}`, v);
             });
         }
         return text;
+    }
+
+    private getNestedValue(obj: any, path: string): any {
+        return path.split('.').reduce((current, key) => current?.[key], obj);
     }
 }

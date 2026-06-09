@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, Length, Matches } from 'class-validator';
+import { validationConstants, getCodeDescription } from '../../config/validation.constants';
 
-export class PasswordDto {
-    @ApiProperty({
-        example: 'MyCurrentPassword123!',
-        description: 'Current user password for verification',
-        minLength: 1,
-    })
+const { resetCode } = validationConstants;
+
+export class DeletionCodeDto {
+    @ApiProperty({ example: 'A7F3K9', description: getCodeDescription() })
     @IsNotEmpty()
-    @IsString()
-    password: string;
+    @Length(resetCode.length, resetCode.length)
+    @Matches(new RegExp(`^[${resetCode.charset}]{${resetCode.length}}$`), {
+        message: `Code must be ${resetCode.length} alphanumeric characters`,
+    })
+    code: string;
 }

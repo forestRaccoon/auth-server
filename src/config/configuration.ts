@@ -1,3 +1,5 @@
+import { validationConstants } from './validation.constants';
+
 export default () => ({
     // Сервер
     port: parseInt(process.env.PORT, 10) || 3000,
@@ -19,31 +21,8 @@ export default () => ({
     // Bcrypt
     bcryptSaltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS, 10) || 10,
 
-    // Валидация (общие параметры, также используются в кастомных валидаторах)
-    validation: {
-        password: {
-            minLength: parseInt(process.env.PASSWORD_MIN_LENGTH, 10) || 8,
-            maxLength: parseInt(process.env.PASSWORD_MAX_LENGTH, 10) || 50,
-            requireLetter: process.env.PASSWORD_REQUIRE_LETTER !== 'false',
-            requireNumber: process.env.PASSWORD_REQUIRE_NUMBER !== 'false',
-            requireSpecial: process.env.PASSWORD_REQUIRE_SPECIAL === 'true',
-            specialChars: process.env.PASSWORD_SPECIAL_CHARS || '!@#$%^&*',
-        },
-        email: {
-            minLength: parseInt(process.env.EMAIL_MIN_LENGTH, 10) || 5,
-            maxLength: parseInt(process.env.EMAIL_MAX_LENGTH, 10) || 100,
-            requireTld: process.env.EMAIL_REQUIRE_TLD !== 'false',
-        },
-        fullName: {
-            minLength: parseInt(process.env.FULLNAME_MIN_LENGTH, 10) || 2,
-            maxLength: parseInt(process.env.FULLNAME_MAX_LENGTH, 10) || 50,
-        },
-        resetCode: {
-            length: parseInt(process.env.RESET_CODE_LENGTH, 10) || 6,
-            charset: process.env.RESET_CODE_CHARSET || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-            expiresMinutes: parseInt(process.env.RESET_CODE_EXPIRES_MINUTES, 10) || 15,
-        },
-    },
+    // Валидация (используем единый источник)
+    validation: validationConstants,
 
     // Дефолтная аватарка
     defaultAvatarUrl: process.env.DEFAULT_AVATAR_URL || 'https://www.gravatar.com/avatar/{{email_hash}}?d=mp&s=200',
@@ -93,12 +72,12 @@ export default () => ({
         notifyNewDevice: process.env.SUSPICIOUS_LOGIN_NOTIFICATION === 'true',
     },
 
-    // Avatar
+    // Avatar (настройки хранения + переиспользуем параметры валидации из validationConstants)
     avatar: {
         tempDir: process.env.AVATAR_UPLOAD_TEMP || './uploads/temp',
         finalDir: process.env.AVATAR_FINAL_DIR || './uploads/avatars',
-        maxSizeMb: parseInt(process.env.AVATAR_MAX_SIZE_MB, 10) || 5,
-        allowedMimes: process.env.AVATAR_ALLOWED_MIMES?.split(',') || ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+        maxSizeMb: validationConstants.avatar.maxSizeMb,
+        allowedMimes: validationConstants.avatar.allowedMimes,
         maxDimension: parseInt(process.env.AVATAR_MAX_DIMENSION, 10) || 1024,
         thumbDimension: parseInt(process.env.AVATAR_THUMB_DIMENSION, 10) || 200,
     },
@@ -136,4 +115,10 @@ export default () => ({
     // Deletion code
     deletionCodeExpiresMinutes: parseInt(process.env.DELETION_CODE_EXPIRES_MINUTES, 10) || 15,
     softDeleteEnabled: process.env.SOFT_DELETE_ENABLED !== 'false',
+    //  cleanup
+    cleanup: {
+        unverifiedEnabled: process.env.CLEANUP_UNVERIFIED_ENABLED === 'true',
+        unverifiedDays: parseInt(process.env.CLEANUP_UNVERIFIED_DAYS, 10) || 7,
+        cronSchedule: process.env.CLEANUP_CRON_SCHEDULE || '0 0 * * *',
+    },
 });
