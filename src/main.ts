@@ -36,7 +36,7 @@ async function bootstrap() {
                 connectSrc: ["'self'"],
                 fontSrc: ["'self'"],
                 objectSrc: ["'none'"],
-                upgradeInsecureRequests: [],
+                upgradeInsecureRequests: process.env.MODE === 'production' ? true : null,
             },
         },
     }));
@@ -109,15 +109,17 @@ async function bootstrap() {
     app.useGlobalInterceptors(new LoggingInterceptor());
 
     // --- Swagger ---
-    const swaggerConfig = new DocumentBuilder()
-        .setTitle('Auth API')
-        .setDescription('Full‑featured authentication server')
-        .setVersion('1.0')
-        .addBearerAuth()
-        .addCookieAuth('refreshToken')
-        .build();
-    const document = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('api/docs', app, document);
+    if (process.env.NODE_ENV !== 'production') {
+        const swaggerConfig = new DocumentBuilder()
+            .setTitle('Auth API')
+            .setDescription('Full featured authentication server')
+            .setVersion('1.0')
+            .addBearerAuth()
+            .addCookieAuth('refreshToken')
+            .build();
+        const document = SwaggerModule.createDocument(app, swaggerConfig);
+        SwaggerModule.setup('api/docs', app, document);
+    }
 
     // --- Статика для аватарок ---
     app.use('/avatars', express.static(configService.get('AVATAR_FINAL_DIR', './uploads/avatars')));
