@@ -25,20 +25,21 @@ async function bootstrap() {
     app.use(express.urlencoded({ extended: true, limit: `${jsonLimit}mb` }));
 
     // --- Helmet (безопасность) ---
+    const cspDirectives: any = {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+    };
+    if (process.env.MODE !== 'production') {
+        cspDirectives.upgradeInsecureRequests = null;
+    }
     app.use(helmet({
         crossOriginResourcePolicy: { policy: "cross-origin" },
-        contentSecurityPolicy: {
-            directives: {
-                defaultSrc: ["'self'"],
-                styleSrc: ["'self'", "'unsafe-inline'"],
-                scriptSrc: ["'self'"],
-                imgSrc: ["'self'", "data:", "https:"],
-                connectSrc: ["'self'"],
-                fontSrc: ["'self'"],
-                objectSrc: ["'none'"],
-                upgradeInsecureRequests: process.env.MODE === 'production' ? true : null,
-            },
-        },
+        contentSecurityPolicy: { directives: cspDirectives },
     }));
 
     app.use(compression());
